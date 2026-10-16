@@ -1,143 +1,65 @@
-import { useEffect, useState } from 'react'
-import Confetti from './Confetti.jsx'
-import { config } from './config.js'
-import './App.css'
+import { useCallback, useEffect, useState } from 'react'
+import MuteButton from './components/MuteButton.jsx'
+import Transition from './components/Transition.jsx'
+import { TEASERS } from './content.js'
+import { sfx, unlockAudio } from './lib/sound.js'
+import Finale from './pages/Finale.jsx'
+import Gate from './pages/Gate.jsx'
+import Hook from './pages/Hook.jsx'
+import PhotoUniverse from './pages/PhotoUniverse.jsx'
+import TeamReveal from './pages/TeamReveal.jsx'
 
-const PALETTE = ['#ff6b8b', '#ffd166', '#06d6a0', '#4cc9f0', '#b388ff', '#ff9f43']
+// The pages, in order. The URL hash (#photos, #team…) remembers where
+// he is, so a refresh doesn't restart the whole surprise.
+const PAGES = { gate: Gate, hook: Hook, photos: PhotoUniverse, team: TeamReveal, finale: Finale }
 
-function Balloons() {
-  return (
-    <div className="balloons" aria-hidden="true">
-      {PALETTE.map((color, i) => (
-        <span key={color} className="balloon" style={{ '--color': color, '--i': i }} />
-      ))}
-    </div>
-  )
-}
-
-function Gift({ opening, onOpen }) {
-  return (
-    <button
-      type="button"
-      className={`gift ${opening ? 'is-opening' : ''}`}
-      onClick={onOpen}
-      disabled={opening}
-      aria-label="Open your present"
-    >
-      <span className="gift-lid">
-        <span className="gift-bow" />
-      </span>
-      <span className="gift-box" />
-    </button>
-  )
-}
-
-function Cake({ candles, lit }) {
-  return (
-    <div className="cake" aria-hidden="true">
-      <div className="candles">
-        {Array.from({ length: candles }, (_, i) => (
-          <span key={i} className="candle">
-            <span className={`flame ${i < lit ? '' : 'is-out'}`} />
-          </span>
-        ))}
-      </div>
-      <div className="cake-top" />
-      <div className="cake-layer" />
-      <div className="cake-plate" />
-    </div>
-  )
+function pageFromHash() {
+  const id = window.location.hash.slice(1)
+  return PAGES[id] ? id : 'gate'
 }
 
 export default function App() {
-  const [stage, setStage] = useState('gift') // gift → opening → party
-  const [lit, setLit] = useState(config.candles)
-  const [blowing, setBlowing] = useState(false)
-  const [burst, setBurst] = useState(0)
+  const [page, setPage] = useState(pageFromHash)
+  const [teaser, setTeaser] = useState(null)
+  const [eggFound, setEggFound] = useState(false)
 
-  // Blow the candles out one at a time, then celebrate.
+  // Phones only allow sound after a tap; after a refresh mid-way, the
+  // first tap anywhere switches it back on.
   useEffect(() => {
-    if (!blowing) return
-    const timer = setTimeout(() => {
-      if (lit === 1) {
-        setBlowing(false)
-        setBurst((b) => b + 1)
-      }
-      setLit(lit - 1)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [blowing, lit])
+    window.addEventListener('pointerdown', unlockAudio, { once: true })
+    return () => window.removeEventListener('pointerdown', unlockAudio)
+  }, [])
 
-  function openGift() {
-    setStage('opening')
-    setTimeout(() => {
-      setStage('party')
-      setBurst((b) => b + 1)
-    }, 900)
-  }
+  useEffect(() => {
+    const onPop = () => setPage(pageFromHash())
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [])
 
-  function replay() {
-    setStage('gift')
-    setLit(config.candles)
-    setBlowing(false)
-  }
+  const go = useCallback((next) => {
+    const swap = () => {
+      setPage(next)
+      window.scrollTo(0, 0)
+      const url = next === 'gate' ? window.location.pathname : `#${next}`
+      window.history.pushState(null, '', url)
+    }
+    const card = TEASERS[next]
+    if (!card) return swap()
+    sfx.whoosh()
+    setTeaser({ ...card, key: Date.now() })
+    setTimeout(swap, 700)
+    setTimeout(() => setTeaser(null), 1900)
+  }, [])
 
-  const wished = lit === 0
+  const Page = PAGES[page]
 
   return (
     <>
-      <Balloons />
-      <Confetti burst={burst} />
-
-      <main className="page">
-        {stage !== 'party' ? (
-          <section className="intro">
-            <p className="eyebrow">Psst… {config.name} 👀</p>
-            <h1 className="intro-title">Someone left a present for you.</h1>
-            <Gift opening={stage === 'opening'} onOpen={openGift} />
-            <p className="hint">Tap the gift to open it</p>
-          </section>
-        ) : (
-          <section className="party">
-            <h1 className="title">
-              <span className="title-small">Happy Birthday,</span>
-              <span className="sr-only">{config.name}</span>
-              <span className="title-name" aria-hidden="true">
-                {[...config.name].map((ch, i) => (
-                  <span key={i} style={{ '--i': i, '--c': PALETTE[i % PALETTE.length] }}>
-                    {ch}
-                  </span>
-                ))}
-              </span>
-            </h1>
-            <p className="message">{config.message}</p>
-
-            <Cake candles={config.candles} lit={lit} />
-
-            {!wished ? (
-              <button type="button" className="btn" onClick={() => setBlowing(true)} disabled={blowing}>
-                {blowing ? 'Blowing…' : 'Make a wish & blow out the candles'}
-              </button>
-            ) : (
-              <>
-                <p className="wished">Wish made! Here are a few more from me 👇</p>
-                <ul className="wishes">
-                  {config.wishes.map((wish, i) => (
-                    <li key={wish.text} className="wish" style={{ '--i': i }}>
-                      <span className="wish-emoji" aria-hidden="true">{wish.emoji}</span>
-                      {wish.text}
-                    </li>
-                  ))}
-                </ul>
-                <p className="signoff">With love, {config.from}</p>
-                <button type="button" className="btn btn-ghost" onClick={replay}>
-                  Open it again
-                </button>
-              </>
-            )}
-          </section>
-        )}
-      </main>
+      <MuteButton />
+      <div key={page} className="page-root">
+        <Page go={go} eggFound={eggFound} onEggFound={() => setEggFound(true)} />
+      </div>
+      {teaser && <Transition key={teaser.key} teaser={teaser} />}
     </>
   )
 }

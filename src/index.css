@@ -1,19 +1,39 @@
-:root {
-  --ink: #fff8f0;
-  --muted: #d9c8f0;
-  --pink: #ff6b8b;
-  --pink-dark: #ff4f75;
-  --yellow: #ffd166;
-  --yellow-dark: #c99a2e;
-  --teal: #06d6a0;
-  --blue: #4cc9f0;
-  --night: #1b1035;
+/* =====================================================================
+   Global styles: fonts, colours, the chunky "sticker" buttons, the page
+   transition card and animations shared by several pages.
+   ===================================================================== */
 
-  color-scheme: dark;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  line-height: 1.5;
+:root {
+  --ink: #1a1033;
+  --paper: #fffaf0;
+  --pink: #ff3d7f;
+  --yellow: #ffd23f;
+  --mint: #3bceac;
+  --blue: #4d9de0;
+  --purple: #9b5de5;
+  --orange: #ff8c42;
+  --red: #e63946;
+  --lilac: #cbbfff;
+
+  --font-display: 'Luckiest Guy', 'Fredoka', system-ui, sans-serif;
+  --font-body: 'Fredoka', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-news: 'Anton', Impact, 'Arial Narrow', sans-serif;
+  --font-hand: 'Caveat', 'Bradley Hand', cursive;
+  --font-mono: 'VT323', ui-monospace, Menlo, monospace;
+  --font-western: 'Rye', Georgia, serif;
+  --font-type: 'Special Elite', 'Courier New', monospace;
+  --font-horror: 'Creepster', 'Luckiest Guy', cursive;
+
+  --outline: 3px solid var(--ink);
+  --shadow-hard: 5px 5px 0 var(--ink);
+
+  color-scheme: light;
+  font-family: var(--font-body);
+  line-height: 1.45;
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
 }
 
 *,
@@ -22,21 +42,349 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  background: #0b0630;
+}
+
+body {
   min-height: 100svh;
-  background: radial-gradient(circle at 50% 0%, #4a2377 0%, var(--night) 60%, #0f0a22 100%) fixed;
-  background-color: var(--night);
   overflow-x: hidden;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
+button {
+  font: inherit;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.page-root {
+  min-height: 100svh;
+  animation: page-in 0.5s ease both;
+}
+
+/* ---------- Chunky sticker button (used on every page) ---------- */
+
+.btn-chunky {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 54px;
+  padding: 14px 24px 12px;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  background: var(--yellow);
+  border: var(--outline);
+  border-radius: 16px;
+  box-shadow: var(--shadow-hard);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.btn-chunky:hover:not(:disabled) {
+  transform: translate(-1px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+.btn-chunky:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.btn-chunky:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* ---------- Mute button ---------- */
+
+.mute-btn {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  right: 12px;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  font-size: 1.35rem;
+  background: #fff;
+  border: var(--outline);
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mute-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* ---------- Confetti canvas (created by lib/confetti.js) ---------- */
+
+.fx-confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- Missing-photo placeholder ---------- */
+
+.photo-ph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  min-height: 60px;
+  padding: 8px;
+  text-align: center;
+  color: var(--ink);
+  background: repeating-linear-gradient(45deg, #ffd23f 0 14px, #ffe27a 14px 28px);
+}
+
+.photo-ph span {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.photo-ph small {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  line-height: 1.1;
+}
+
+/* ---------- Page transition card ---------- */
+
+.transition {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background-color: var(--t-bg);
+  background-image: radial-gradient(rgb(255 255 255 / 0.18) 2px, transparent 2.5px);
+  background-size: 20px 20px;
+  animation:
+    wipe-in 0.65s cubic-bezier(0.7, 0, 0.3, 1) both,
+    wipe-out 0.5s cubic-bezier(0.7, 0, 0.3, 1) 1.35s both;
+}
+
+.transition-inner {
+  text-align: center;
+  animation: pop 0.5s 0.3s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+
+.transition-emoji {
+  display: block;
+  font-size: 5rem;
+  line-height: 1;
+  animation: wobble 0.6s 0.5s ease-in-out both;
+}
+
+.transition-text {
+  margin: 14px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 8vw, 3rem);
+  line-height: 1.05;
+  color: #fff;
+  -webkit-text-stroke: 1.5px var(--ink);
+  text-shadow: 4px 4px 0 var(--ink);
+}
+
+/* ---------- Compliment toast ---------- */
+
+.toast {
+  position: fixed;
+  top: 72px;
+  left: 50%;
+  z-index: 920;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 10px 16px 12px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--ink);
+  background: #fff;
+  border: var(--outline);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--ink);
+  pointer-events: none;
+  animation: toast 2.8s ease both;
+}
+
+.toast small {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+/* ---------- Reveal-on-scroll (add data-reveal to any element) ---------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px) scale(0.94);
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s cubic-bezier(0.2, 1.4, 0.4, 1);
+  transition-delay: var(--delay, 0s);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Shared animations ---------- */
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes wipe-in {
+  from {
+    clip-path: circle(0% at 50% 100%);
+  }
+  to {
+    clip-path: circle(150% at 50% 100%);
+  }
+}
+
+@keyframes wipe-out {
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-14deg) scale(1.1);
+  }
+  75% {
+    transform: rotate(12deg) scale(1.1);
+  }
+}
+
+@keyframes shake-hard {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+  15% {
+    transform: translate(-10px, 3px) rotate(-6deg);
+  }
+  30% {
+    transform: translate(9px, -4px) rotate(5deg);
+  }
+  45% {
+    transform: translate(-8px, 2px) rotate(-4deg);
+  }
+  60% {
+    transform: translate(7px, -2px) rotate(3deg);
+  }
+  75% {
+    transform: translate(-4px, 1px) rotate(-2deg);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes toast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20px) scale(0.9);
+  }
+  10%,
+  85% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -46,5 +394,6 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

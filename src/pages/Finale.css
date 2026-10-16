@@ -1,0 +1,433 @@
+/* =====================================================================
+   Page 4: the finale
+   ===================================================================== */
+
+.finale {
+  position: relative;
+  min-height: 100svh;
+  overflow-x: clip;
+  color: #fff;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 110%, rgb(155 93 229 / 0.55), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 10%, rgb(77 157 224 / 0.25), transparent),
+    #07041a;
+}
+
+.fw-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.finale-dark {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #000;
+  transition: opacity 0.35s ease;
+}
+
+.finale-dark.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- HAPPY BIRTHDAY ---------- */
+
+.finale-hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 70px 10px 40px;
+  text-align: center;
+}
+
+.hb {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.95;
+}
+
+.hb-line1,
+.hb-line2 {
+  display: block;
+}
+
+.hb-line1 {
+  font-size: clamp(2.1rem, 10vw, 5.5rem);
+}
+
+.hb-line2 {
+  margin-top: 6px;
+  font-size: clamp(4rem, 22vw, 10rem);
+}
+
+.hb-word {
+  display: inline-block;
+  margin: 0 0.12em;
+  white-space: nowrap;
+}
+
+.hb-letter {
+  display: inline-block;
+  color: var(--c);
+  text-shadow:
+    0 0 22px var(--c),
+    4px 4px 0 rgb(0 0 0 / 0.45);
+  animation:
+    hb-burst 0.9s cubic-bezier(0.2, 1.7, 0.4, 1) both,
+    hb-float 2.6s ease-in-out infinite;
+  animation-delay:
+    calc(var(--i) * 55ms),
+    calc(1s + var(--i) * 90ms);
+}
+
+.finale-tap {
+  margin: 22px 0 0;
+  color: var(--lilac);
+  animation: fade-up 0.8s 1.6s both;
+}
+
+.finale-more {
+  margin-top: 26px;
+  animation:
+    fade-up 0.8s 3.2s both,
+    bob 1.8s 4s ease-in-out infinite;
+}
+
+/* ---------- Make a wish ---------- */
+
+.finale-cake {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 60px 16px;
+  text-align: center;
+}
+
+.finale-h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 10vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1;
+  animation: fade-up 0.7s both;
+}
+
+.finale-p {
+  margin: 8px 0 26px;
+  color: var(--lilac);
+  animation: fade-up 0.7s 0.3s both;
+}
+
+.cake29 {
+  position: relative;
+  width: 260px;
+  padding: 130px 0 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  animation: fade-up 0.8s 0.5s both;
+}
+
+.cake29-candles {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.num-candle {
+  position: relative;
+  padding-top: 34px;
+}
+
+.num-digit {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 6.6rem;
+  line-height: 0.82;
+  color: transparent;
+  background: repeating-linear-gradient(135deg, #fff 0 9px, var(--pink) 9px 18px);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 3px var(--ink);
+  filter: drop-shadow(0 0 1px #fff);
+}
+
+/* wick */
+.num-candle::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  width: 3px;
+  height: 14px;
+  margin-left: -1.5px;
+  background: #3a2a1a;
+}
+
+.num-flame {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 16px;
+  height: 26px;
+  margin-left: -8px;
+  background: radial-gradient(circle at 50% 72%, #fff7c2, var(--yellow) 45%, #ff8c42 80%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: 0 0 24px 8px rgb(255 210 63 / 0.55);
+  transform-origin: 50% 90%;
+  animation: candle-flicker 0.28s ease-in-out infinite alternate;
+}
+
+.num-smoke {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: rgb(220 220 230 / 0.6);
+  opacity: 0;
+}
+
+.cake29.is-blown .num-flame {
+  animation: candle-out 0.4s ease forwards;
+}
+
+.cake29.is-blown .num-smoke {
+  animation: candle-smoke 1.6s 0.2s ease-out forwards;
+}
+
+.cake29-top {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 34px;
+  background: #fff0f5;
+  border: 3px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
+}
+
+/* icing drips */
+.cake29-top::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  height: 14px;
+  background: radial-gradient(circle at 11px 0, #fff0f5 10px, transparent 11px) 0 0 / 22px 14px repeat-x;
+}
+
+.cake29-body {
+  display: block;
+  height: 92px;
+  background:
+    linear-gradient(transparent 46%, rgb(255 255 255 / 0.5) 46% 52%, transparent 52%),
+    linear-gradient(#ff8fab, var(--pink));
+  border: 3px solid var(--ink);
+  border-top: 0;
+}
+
+.cake29-plate {
+  display: block;
+  height: 16px;
+  margin: 0 -26px;
+  background: #e9e4f5;
+  border: 3px solid var(--ink);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+/* ---------- The letter ---------- */
+
+.finale-letter {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 72px 16px 120px;
+}
+
+.letter {
+  width: min(100%, 480px);
+  padding: 28px 22px 24px;
+  color: #2a1a10;
+  background:
+    radial-gradient(circle at 15% 10%, rgb(255 255 255 / 0.6), transparent 40%),
+    #fff6e0;
+  border-radius: 6px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.55);
+  transform: rotate(-1deg);
+  animation: fade-up 0.8s both;
+}
+
+.letter p {
+  margin: 0 0 14px;
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.2;
+  animation: letter-ink 1s ease both;
+  animation-delay: calc(0.4s + var(--i) * 1.1s);
+}
+
+.letter p:first-child {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.letter-signoff {
+  margin-top: 22px !important;
+}
+
+.letter-sigs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 16px;
+}
+
+.letter-sig {
+  font-family: var(--font-hand);
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--c);
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.25);
+  animation: letter-sig 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+  animation-delay: var(--d);
+}
+
+.team-polaroid {
+  width: min(92%, 420px);
+  margin: 40px 0 0;
+  padding: 10px 10px 0;
+  background: #fff;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.55);
+  transform: rotate(2deg);
+  animation: letter-drop 0.9s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  animation-delay: var(--d);
+}
+
+.team-polaroid img,
+.team-polaroid .photo-ph {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.team-polaroid figcaption {
+  padding: 10px 0 14px;
+  font-family: var(--font-hand);
+  font-size: 1.7rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--ink);
+}
+
+.finale-end {
+  margin-top: 40px;
+  text-align: center;
+  animation: fade-up 0.8s both;
+  animation-delay: var(--d);
+}
+
+.egg-hint {
+  max-width: 30ch;
+  margin: 18px auto 0;
+  font-size: 0.95rem;
+  color: var(--lilac);
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes hb-burst {
+  from {
+    opacity: 0;
+    transform: translate(var(--fx), var(--fy)) scale(0) rotate(var(--fr));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hb-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes candle-flicker {
+  from {
+    transform: scale(1) rotate(-2deg);
+  }
+  to {
+    transform: scale(1.08, 0.94) rotate(2deg);
+  }
+}
+
+@keyframes candle-out {
+  to {
+    opacity: 0;
+    transform: scale(0) translateY(-10px);
+    box-shadow: none;
+  }
+}
+
+@keyframes candle-smoke {
+  0% {
+    opacity: 0.8;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px) translateX(12px) scale(4);
+  }
+}
+
+@keyframes letter-ink {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(8px);
+  }
+}
+
+@keyframes letter-sig {
+  from {
+    opacity: 0;
+    transform: scale(0.3) rotate(-12deg);
+  }
+}
+
+@keyframes letter-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) rotate(-10deg) scale(0.9);
+  }
+}
