@@ -3,6 +3,7 @@ import MuteButton from './components/MuteButton.jsx'
 import Transition from './components/Transition.jsx'
 import { TEASERS } from './content.js'
 import { sfx, unlockAudio } from './lib/sound.js'
+import { readMs } from './lib/timing.js'
 import Finale from './pages/Finale.jsx'
 import Gate from './pages/Gate.jsx'
 import Hook from './pages/Hook.jsx'
@@ -47,8 +48,9 @@ export default function App() {
     if (!card) return swap()
     sfx.whoosh()
     setTeaser({ ...card, key: Date.now() })
-    setTimeout(swap, 700)
-    setTimeout(() => setTeaser(null), 1900)
+    setTimeout(swap, 700) // the card fully covers the screen by now
+    // Remove the card after it wipes away (matches .transition in index.css).
+    setTimeout(() => setTeaser(null), readMs(1350) + 600)
   }, [])
 
   const Page = PAGES[page]

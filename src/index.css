@@ -27,6 +27,10 @@
   --outline: 3px solid var(--ink);
   --shadow-hard: 5px 5px 0 var(--ink);
 
+  /* Reading-time multiplier for timed animations. The real value comes
+     from READING_TIME in src/content.js (set by src/lib/timing.js). */
+  --read: 1;
+
   color-scheme: light;
   font-family: var(--font-body);
   line-height: 1.45;
@@ -193,7 +197,7 @@ img {
   background-size: 20px 20px;
   animation:
     wipe-in 0.65s cubic-bezier(0.7, 0, 0.3, 1) both,
-    wipe-out 0.5s cubic-bezier(0.7, 0, 0.3, 1) 1.35s both;
+    wipe-out 0.5s cubic-bezier(0.7, 0, 0.3, 1) calc(1.35s * var(--read)) both;
 }
 
 .transition-inner {
@@ -236,7 +240,7 @@ img {
   border-radius: 14px;
   box-shadow: 4px 4px 0 var(--ink);
   pointer-events: none;
-  animation: toast 2.8s ease both;
+  animation: toast calc(2.8s * var(--read)) ease both;
 }
 
 .toast small {

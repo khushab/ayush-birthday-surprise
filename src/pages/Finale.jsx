@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Photo from '../components/Photo.jsx'
-import { AGE, EASTER_EGG, FINALE, TEAM } from '../content.js'
+import { AGE, EASTER_EGG, FINALE, READING_TIME, TEAM } from '../content.js'
 import { cannons, clearConfetti } from '../lib/confetti.js'
 import { createFireworks } from '../lib/fireworks.js'
 import { playHappyBirthday, sfx } from '../lib/sound.js'
@@ -8,6 +8,10 @@ import './Finale.css'
 
 const COLORS = ['#ff3d7f', '#ffd23f', '#3bceac', '#4d9de0', '#9b5de5', '#ff8c42']
 const DARK_MS = 2000
+// Letter pacing in seconds, stretched by READING_TIME (the CSS for
+// .letter p in Finale.css uses the same 1.1s gap).
+const PARAGRAPH_GAP = 1.1 * READING_TIME
+const SIGNATURE_GAP = 0.3 * READING_TIME
 
 // Page 4, the finale:
 // 2 seconds of darkness → HAPPY BIRTHDAY + fireworks → make a wish → the group letter.
@@ -71,8 +75,8 @@ export default function Finale({ go, eggFound }) {
   }
 
   const paragraphs = FINALE.message.split(/\n\s*\n/)
-  const sigStart = paragraphs.length * 1.1 + 0.6
-  const afterSigs = sigStart + TEAM.length * 0.3
+  const sigStart = paragraphs.length * PARAGRAPH_GAP + 0.6
+  const afterSigs = sigStart + TEAM.length * SIGNATURE_GAP
   const title = `${FINALE.line1} ${FINALE.line2}`
 
   return (
@@ -141,7 +145,7 @@ export default function Finale({ go, eggFound }) {
                 <span
                   key={member.name}
                   className="letter-sig"
-                  style={{ '--c': member.color, '--d': `${sigStart + i * 0.3}s` }}
+                  style={{ '--c': member.color, '--d': `${sigStart + i * SIGNATURE_GAP}s` }}
                 >
                   {member.name}
                 </span>

@@ -177,7 +177,7 @@
   border-radius: 12px;
   animation:
     pop 0.3s cubic-bezier(0.2, 1.6, 0.4, 1) both,
-    fade-in 0.4s 0.9s reverse both;
+    fade-in 0.4s calc(0.9s * var(--read)) reverse both;
 }
 
 .rb-count {

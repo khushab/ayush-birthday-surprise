@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { GATE, NAME } from '../content.js'
 import { sfx, unlockAudio } from '../lib/sound.js'
+import { readMs } from '../lib/timing.js'
 import './Gate.css'
 
 // Page 0: a one-tap "identity check". Both answers continue, and the tap
@@ -14,7 +15,7 @@ export default function Gate({ go }) {
     if (isYes) sfx.tada()
     else sfx.buzz()
     setReply(isYes ? GATE.yesReply : GATE.noReply)
-    setTimeout(() => go('hook'), isYes ? 1900 : 2700)
+    setTimeout(() => go('hook'), readMs(isYes ? 1900 : 2700))
   }
 
   return (

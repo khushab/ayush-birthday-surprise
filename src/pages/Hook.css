@@ -250,7 +250,7 @@
   border: 1px solid #000;
   box-shadow: 3px 3px 0 rgb(0 0 0 / 0.3);
   transform: translateX(-50%);
-  animation: toast 2.4s ease both;
+  animation: toast calc(2.4s * var(--read)) ease both;
 }
 
 /* ---------- Blue screen ---------- */
@@ -530,7 +530,7 @@
   width: max-content;
   height: 100%;
   align-items: center;
-  animation: news-ticker 40s linear infinite;
+  animation: news-ticker calc(40s * var(--read)) linear infinite;
 }
 
 .news-ticker-track span {

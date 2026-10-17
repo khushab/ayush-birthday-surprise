@@ -99,8 +99,8 @@
 .finale-more {
   margin-top: 26px;
   animation:
-    fade-up 0.8s 3.2s both,
-    bob 1.8s 4s ease-in-out infinite;
+    fade-up 0.8s calc(3.2s * var(--read)) both,
+    bob 1.8s calc(4s * var(--read)) ease-in-out infinite;
 }
 
 /* ---------- Make a wish ---------- */
@@ -288,7 +288,7 @@
   font-weight: 500;
   line-height: 1.2;
   animation: letter-ink 1s ease both;
-  animation-delay: calc(0.4s + var(--i) * 1.1s);
+  animation-delay: calc(0.4s + var(--i) * 1.1s * var(--read));
 }
 
 .letter p:first-child {

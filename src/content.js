@@ -13,6 +13,14 @@ export const AGE = 29
 export const COMPANY = 'Bread & Butter'
 
 // ---------------------------------------------------------------------
+//  READING TIME: everything that disappears or moves on by itself
+//  (pop-ups, toasts, loading messages, teaser cards, news headlines…)
+//  stays on screen this many times longer than the original timing.
+//  1 = original speed · 1.3 = 30% longer · 1.5 = 50% longer
+// ---------------------------------------------------------------------
+export const READING_TIME = 1.3
+
+// ---------------------------------------------------------------------
 //  THE TEAM: who the surprise is from.
 //  The gift boxes, the "hacked by N people" line and the finale
 //  signatures all follow this list, so adding or removing a person
@@ -114,15 +122,19 @@ export const WINDOW_TAUNTS = {
 
 // The fake progress bar. Each step moves the bar to `to` percent over
 // `ms` milliseconds and shows `text`. A lower `to` makes it go backwards.
+// Repeating a step with the same `to` and text pauses the bar while that
+// line stays up to be read (used after the fast jumps).
 export const LOADING_SCRIPT = [
   { to: 9, ms: 800, text: 'Counting candles… 🕯️' },
   { to: 16, ms: 900, text: 'Not enough candles in the country. Importing more…' },
   { to: 16, ms: 1300, text: 'Converting to dog years… 203?! 🐶' },
   { to: 54, ms: 400, text: 'Skipping the embarrassing years ⏩' },
+  { to: 54, ms: 700, text: 'Skipping the embarrassing years ⏩' },
   { to: 37, ms: 800, text: 'Wait. Going back. We missed some grey hairs.' },
   { to: 63, ms: 1100, text: 'Consulting a carbon-dating lab 🔬' },
   { to: 63, ms: 1100, text: 'Asking his knees for a second opinion…' },
   { to: 91, ms: 350, text: 'Downloading more RAM to store this number 💾' },
+  { to: 91, ms: 700, text: 'Downloading more RAM to store this number 💾' },
   { to: 77, ms: 700, text: 'Hmm. Recalculating 🤨' },
   { to: 98, ms: 900, text: 'Almost there…' },
   { to: 99, ms: 1300, text: 'Final number incoming…' },

@@ -3,6 +3,7 @@ import Photo from '../components/Photo.jsx'
 import { GIFTS, HACK, HACK_LINES, RED_BUTTON, TEAM } from '../content.js'
 import { burst, cannons, rain } from '../lib/confetti.js'
 import { sfx } from '../lib/sound.js'
+import { readMs } from '../lib/timing.js'
 import './TeamReveal.css'
 
 // Page 3, the team reveal: the red button → a friendly "hack" → gift boxes.
@@ -112,7 +113,7 @@ function RedButton({ onGiveUp }) {
       default:
         sfx.glitch()
         setMood('final')
-        setTimeout(onGiveUp, 1500)
+        setTimeout(onGiveUp, readMs(1500))
     }
   }
 
@@ -197,7 +198,7 @@ function HackerTerminal({ onDone }) {
   // A red "SYSTEM BREACH" flash before the typing starts.
   useEffect(() => {
     sfx.glitch()
-    const t = setTimeout(() => setBreach(false), 1700)
+    const t = setTimeout(() => setBreach(false), readMs(1700))
     return () => clearTimeout(t)
   }, [])
 
@@ -222,7 +223,7 @@ function HackerTerminal({ onDone }) {
         setLineIndex(lineIndex + 1)
         setChars(0)
       },
-      fast.current ? 120 : (line.pause ?? 260),
+      fast.current ? 120 : readMs(line.pause ?? 260),
     )
     return () => clearTimeout(t)
   }, [breach, finished, lines, lineIndex, chars])

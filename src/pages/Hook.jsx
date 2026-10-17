@@ -13,6 +13,7 @@ import {
 } from '../content.js'
 import { burst } from '../lib/confetti.js'
 import { sfx } from '../lib/sound.js'
+import { readMs } from '../lib/timing.js'
 import './Hook.css'
 
 // Page 1, the hook:
@@ -45,15 +46,17 @@ const TIMELINE = (() => {
   let start = 0
   let from = 0
   return LOADING_SCRIPT.map((step) => {
-    const segment = { ...step, start, from }
-    start += step.ms
+    const ms = readMs(step.ms)
+    const segment = { ...step, ms, start, from }
+    start += ms
     from = step.to
     return segment
   })
 })()
 const TOTAL_MS = TIMELINE.at(-1).start + TIMELINE.at(-1).ms
-const FIRST_POPUP_MS = 1500 // time to read the crash message first
-const POPUP_GAP_MS = 1300 // time to read each roast (tapping OK skips ahead)
+const FIRST_POPUP_MS = readMs(1500) // time to read the crash message first
+const POPUP_GAP_MS = readMs(1300) // time to read each roast (tapping OK skips ahead)
+const LAST_POPUP_MS = readMs(1500) // time to read the last roast before the blue screen
 
 function AgeCalculator({ onDone }) {
   const [pct, setPct] = useState(0)
@@ -108,7 +111,7 @@ function AgeCalculator({ onDone }) {
   useEffect(() => {
     if (!crashed) return
     if (popups >= ERROR_ROASTS.length) {
-      const t = setTimeout(onDone, 1500)
+      const t = setTimeout(onDone, LAST_POPUP_MS)
       return () => clearTimeout(t)
     }
     const t = setTimeout(nextPopup, popups === 0 ? FIRST_POPUP_MS : POPUP_GAP_MS)
@@ -238,13 +241,13 @@ function BlueScreen({ onDone }) {
 
   useEffect(() => {
     sfx.glitch()
-    const id = setInterval(() => setPct((p) => Math.min(100, p + 6 + Math.floor(Math.random() * 12))), 280)
+    const id = setInterval(() => setPct((p) => Math.min(100, p + 6 + Math.floor(Math.random() * 12))), readMs(280))
     return () => clearInterval(id)
   }, [])
 
   useEffect(() => {
     if (pct < 100) return
-    const t = setTimeout(onDone, 900)
+    const t = setTimeout(onDone, readMs(900))
     return () => clearTimeout(t)
   }, [pct, onDone])
 
@@ -314,9 +317,9 @@ function BreakingNews({ onDone }) {
 
   useEffect(() => {
     sfx.newsSting()
-    const rotate = setInterval(() => setSub((s) => (s + 1) % NEWS.subheadlines.length), 3400)
+    const rotate = setInterval(() => setSub((s) => (s + 1) % NEWS.subheadlines.length), readMs(3400))
     const tick = setInterval(() => setClock(new Date()), 1000)
-    const show = setTimeout(() => setReady(true), 5200)
+    const show = setTimeout(() => setReady(true), readMs(5200))
     return () => {
       clearInterval(rotate)
       clearInterval(tick)
