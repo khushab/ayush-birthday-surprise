@@ -25,9 +25,13 @@ export const READING_TIME = 1.3
 //  The gift boxes, the "hacked by N people" line and the finale
 //  signatures all follow this list, so adding or removing a person
 //  here updates every count on the site.
-//    color: the colour of their gift box
-//    photo: optional, e.g. 'photos/team/avanti.jpg', shown on the lid
-//    note:  DEMO notes. Replace each one with the real note.
+//    color:  the colour of their gift box
+//    photo:  optional, e.g. 'photos/team/avanti.jpg', shown on the lid
+//    note:   their personal note. Line breaks inside `backticks` show
+//            up as line breaks on the card. Notes marked DEMO are
+//            placeholders waiting for the real thing.
+//    signed: true when the note already ends with its own sign-off,
+//            so the card doesn't add "— Name" underneath
 // ---------------------------------------------------------------------
 export const TEAM = [
   {
@@ -35,6 +39,7 @@ export const TEAM = [
     emoji: '🌻',
     color: '#ff3d7f',
     photo: null,
+    // DEMO
     note: "Happy 29th, Ayush! Thank you for being the calm in every chaotic room (and, let's be honest, the cause of half the chaos). Here's to your best year yet.",
   },
   {
@@ -42,20 +47,36 @@ export const TEAM = [
     emoji: '✨',
     color: '#ffd23f',
     photo: null,
-    note: "To the person who turns 'what if…' into 'let's do it': happy birthday! Building things with you is the best kind of crazy. Now go eat all the cake.",
+    note: `yo ayush!!
+
+happpyyyy birthdayyy !!!!
+i really hope you enjoy your day to the fullest and have the best year ahead.
+
+stay happy, stay healthy, and keep being the person you are 💗
+
+and remember, as mike would say, you just got lucky to have me on your team 😎
+
+with love
+mansi 🫶`,
+    signed: true,
   },
   {
     name: 'Khushab',
     emoji: '🚀',
     color: '#3bceac',
     photo: null,
-    note: 'Happy birthday, Ayush! Thank you for backing wild ideas and always having our backs. I promise: no deploys on your birthday. Probably.',
+    note: `Happy birthday, bhai! 🎂
+
+Thank you for always being there for me and looking out for me like an elder brother. You inspire me to become a little better every single day, and I'm really grateful to have you in my corner.
+
+Lots of love ❤️`,
   },
   {
     name: 'Vibhakar',
     emoji: '🌈',
     color: '#4d9de0',
     photo: null,
+    // DEMO
     note: '29 looks good on you! Thanks for the late-night calls, the questionable puns and the endless belief in this team. Have the best year.',
   },
   {
@@ -63,20 +84,21 @@ export const TEAM = [
     emoji: '⭐',
     color: '#ff8c42',
     photo: null,
-    note: 'May your coffee be strong, your meetings be short and your calendar finally have one free slot. So grateful for you. Happy birthday!',
+    note: `Happy birthday Ayush bhai 🎂 I don't say this enough, so here it is. I see how much you carry, and you still show up with full energy every single time. When I joined in June I didn't know what working here would be like. Ab lagta hai team nahi, ek gang mil gayi 😂 You made it easy to care about bb.bio, and that matters to me more than I usually let on. So enjoy your day today fullest without slack notification. Cheers 🍻`,
   },
   {
     name: 'Srijeeta',
     emoji: '💛',
     color: '#9b5de5',
     photo: null,
-    note: 'Ayush, you make everyone around you a little braver. Thank you for building a place where we all get to be ourselves. Happy 29th!',
+    note: `Happy 29th, Ayush! Thanks for making the big swings feel less scary and “what if?” feel like a pretty good place to start. Here’s to another year of building cool things together ! 🚀`,
   },
   {
     name: 'Vibhor',
     emoji: '🎈',
     color: '#e63946',
     photo: null,
+    // DEMO
     note: "Happy birthday to the co-founder who celebrates every tiny win like it's the World Cup final. Never change. Here's to the next chapter!",
   },
 ]

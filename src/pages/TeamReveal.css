@@ -646,6 +646,7 @@
   font-size: 1.65rem;
   font-weight: 500;
   line-height: 34px;
+  white-space: pre-line; /* keep the writer's own line breaks */
 }
 
 .note-sign {
@@ -659,6 +660,7 @@
 
 .note-close {
   width: 100%;
+  margin-top: 10px;
 }
 
 /* ---------- Animations ---------- */

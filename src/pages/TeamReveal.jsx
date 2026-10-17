@@ -410,9 +410,11 @@ function NoteModal({ member, onClose }) {
           </div>
         </div>
         <p className="note-text">{member.note}</p>
-        <p className="note-sign">
-          — {member.name} {member.emoji}
-        </p>
+        {!member.signed && (
+          <p className="note-sign">
+            — {member.name} {member.emoji}
+          </p>
+        )}
         <button type="button" className="btn-chunky note-close" onClick={onClose} autoFocus>
           {GIFTS.close}
         </button>
