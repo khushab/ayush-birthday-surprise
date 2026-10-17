@@ -582,15 +582,16 @@
 }
 
 .note-card {
+  --line: 34px; /* handwriting line height = spacing of the paper's lines */
+  display: flex;
+  flex-direction: column;
   width: min(100%, 400px);
   max-height: calc(100svh - 32px);
-  overflow: auto;
+  overflow: hidden;
   padding: 20px 20px 20px;
   text-align: left;
   color: var(--ink);
-  background:
-    repeating-linear-gradient(transparent 0 33px, #e6defc 33px 34px),
-    #fffdf5;
+  background: #fffdf5;
   border: 4px solid var(--ink);
   border-top-width: 14px;
   border-top-color: var(--gift);
@@ -640,13 +641,47 @@
   line-height: 1;
 }
 
+.note-card.is-long {
+  --line: 30px;
+}
+
+/* The lined paper with the note on it. It scrolls by itself when a note
+   is too long for the screen, keeping the name and Close button in view. */
+.note-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: repeating-linear-gradient(transparent 0 calc(var(--line) - 1px), #e6defc calc(var(--line) - 1px) var(--line));
+  background-attachment: local;
+}
+
+.note-body.has-more {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 44px), transparent);
+}
+
 .note-text {
   margin: 8px 0 6px;
   font-family: var(--font-hand);
   font-size: 1.65rem;
   font-weight: 500;
-  line-height: 34px;
+  line-height: var(--line);
   white-space: pre-line; /* keep the writer's own line breaks */
+}
+
+.note-card.is-long .note-text {
+  font-size: 1.45rem;
+}
+
+.note-more {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: #6b5a8a;
+  animation: bob 1.6s ease-in-out infinite;
 }
 
 .note-sign {

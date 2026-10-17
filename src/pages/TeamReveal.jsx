@@ -385,17 +385,40 @@ function GiftRoom({ onFinale }) {
   )
 }
 
+// Notes longer than this get slightly smaller handwriting so they fit on a phone.
+const LONG_NOTE_CHARS = 300
+
 function NoteModal({ member, onClose }) {
+  const bodyRef = useRef(null)
+  const [hasMore, setHasMore] = useState(false) // part of the note is still below the fold
+  const isLong = member.note.length > LONG_NOTE_CHARS
+
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
+  // A note too long for the screen scrolls inside the card. While there's
+  // more below, the bottom edge fades and a hint shows.
+  useEffect(() => {
+    const el = bodyRef.current
+    const check = () => setHasMore(el.scrollTop + el.clientHeight < el.scrollHeight - 4)
+    const frame = requestAnimationFrame(check)
+    document.fonts?.ready.then(check)
+    el.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => {
+      cancelAnimationFrame(frame)
+      el.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [])
+
   return (
     <div className="note-backdrop" onClick={onClose}>
       <div
-        className="note-card"
+        className={`note-card ${isLong ? 'is-long' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="note-name"
@@ -409,10 +432,17 @@ function NoteModal({ member, onClose }) {
             <strong id="note-name">{member.name}</strong>
           </div>
         </div>
-        <p className="note-text">{member.note}</p>
-        {!member.signed && (
-          <p className="note-sign">
-            — {member.name} {member.emoji}
+        <div ref={bodyRef} className={`note-body ${hasMore ? 'has-more' : ''}`}>
+          <p className="note-text">{member.note}</p>
+          {!member.signed && (
+            <p className="note-sign">
+              — {member.name} {member.emoji}
+            </p>
+          )}
+        </div>
+        {hasMore && (
+          <p className="note-more" aria-hidden="true">
+            {GIFTS.scrollHint}
           </p>
         )}
         <button type="button" className="btn-chunky note-close" onClick={onClose} autoFocus>

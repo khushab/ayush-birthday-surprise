@@ -76,8 +76,13 @@ Lots of love ❤️`,
     emoji: '🌈',
     color: '#4d9de0',
     photo: null,
-    // DEMO
-    note: '29 looks good on you! Thanks for the late-night calls, the questionable puns and the endless belief in this team. Have the best year.',
+    note: `Happy birthday Ayush 🎉
+
+Officially the last year of your twenties! but 29 has to be a legendary one before the big 3-0 shows up 😄
+
+I want to say thank you for always being candid with me and telling me things as they are. I'm also sorry I couldn't be there in person to wish you. Thank you for giving me so many chances after all my mess-ups 🥲, and for believing in me and not giving up.
+
+Wishing you an amazing year ahead. And just so you know, I'll be waiting for that birthday party whenever we meet 🎂🥳.`,
   },
   {
     name: 'Chinmay',
@@ -98,8 +103,7 @@ Lots of love ❤️`,
     emoji: '🎈',
     color: '#e63946',
     photo: null,
-    // DEMO
-    note: "Happy birthday to the co-founder who celebrates every tiny win like it's the World Cup final. Never change. Here's to the next chapter!",
+    note: `Happy birthday Ayushhh! 🥳 Thanks for always being so supportive and understanding bro really appreciate it. Wishing you lots of happiness and success in everything you do. Have an amazing day ❤️`,
   },
 ]
 
@@ -440,6 +444,7 @@ export const HACK = {
 export const GIFTS = {
   title: 'Your hackers left you presents',
   close: 'Close 💛',
+  scrollHint: 'scroll for more ↓',
   subtitle: 'One from each of us. Open them all to unlock the finale.',
   counter: (opened, total) => {
     if (opened === 0) return `${total} presents. 0 opened. What are you waiting for? 👀`
