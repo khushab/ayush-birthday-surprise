@@ -39,8 +39,7 @@ export const TEAM = [
     emoji: '🌻',
     color: '#ff3d7f',
     photo: null,
-    // DEMO
-    note: "Happy 29th, Ayush! Thank you for being the calm in every chaotic room (and, let's be honest, the cause of half the chaos). Here's to your best year yet.",
+    note: `Happy birthday Mr. Breadmaster - so proud of everything you are, are becoming and for this crazy ride!! Biggest congratulations on being a year older, yet not wiser, and I can’t wait to take this to great heights with you 🫶🏼`,
   },
   {
     name: 'Mansi',
